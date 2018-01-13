@@ -40,4 +40,5 @@ class ConcertTest extends TestCase
 
         $this->assertEquals('67.50', $concert->ticket_price_in_dollars);
     }
+
 }

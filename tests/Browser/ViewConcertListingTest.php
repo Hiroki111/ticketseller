@@ -15,9 +15,7 @@ class ViewConcertListingTest extends DuskTestCase
     /** @test */
     public function user_can_view_a_published_concert_listing()
     {
-        //Arrange
-        //Create a model
-        $concert = Concert::create([
+        $concert = factory(Concert::class)->states('published')->create([
             'title'                  => 'The Red chord',
             'subtitle'               => 'with Animostiy and lethargy',
             'date'                   => Carbon::parse('December 13, 2016 8:00pm'),
@@ -28,7 +26,6 @@ class ViewConcertListingTest extends DuskTestCase
             'state'                  => 'QLD',
             'zip'                    => '4113',
             'additional_information' => '',
-            'published_at'           => Carbon::parse('-1 week'),
         ]);
 
         $this->browse(function (Browser $browser) use ($concert) {

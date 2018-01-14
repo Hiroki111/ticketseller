@@ -12,7 +12,8 @@ class ViewConcertListingTest extends DuskTestCase
 {
     use DatabaseMigrations;
 
-    public function test_user_can_view_a_published_concert_listing()
+    /** @test */
+    public function user_can_view_a_published_concert_listing()
     {
         //Arrange
         //Create a model

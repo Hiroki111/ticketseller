@@ -2,6 +2,8 @@
 
 namespace App\Billing;
 
+use App\Billing\PaymentFailedException;
+
 //Why do we use it instead of actually using Stripe?
 //One benefit of using a class like this is that
 //you don't need to use the internet
@@ -22,6 +24,9 @@ class FakePaymentGateway implements PaymentGateway
 
     public function charge($amount, $token)
     {
+        if ($token !== $this->getValidTestToken()) {
+            throw new PaymentFailedException;
+        }
         $this->charges[] = $amount;
     }
 

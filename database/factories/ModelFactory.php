@@ -3,7 +3,7 @@
 use Carbon\Carbon;
 use Faker\Generator as Faker;
 
-//Usually, define function doesn't involve anything nullable
+//Usually, defining a model doesn't involve anything nullable in its fields
 //In this case, for example, 'published_at' is omitted, since it's nullable
 $factory->define(App\Concert::class, function (Faker $faker) {
     return [

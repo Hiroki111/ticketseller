@@ -10,6 +10,24 @@ use Tests\TestCase;
 class OrderTest extends TestCase
 {
     use DatabaseMigrations;
+
+    /** @test */
+    public function converting_to_an_array()
+    {
+        $concert = factory(Concert::class)->create([
+            'ticket_price' => 1200,
+        ])->addTickets(5);
+        $order = $concert->orderTickets('blah@gmail.com', 5);
+
+        $result = $order->toArray();
+
+        $this->assertEquals($order->toArray(), [
+            'email'           => 'blah@gmail.com',
+            'ticket_quantity' => 5,
+            'amount'          => 6000,
+        ]);
+    }
+
     /** @test */
     public function tickets_are_released_when_an_order_is_cancelled()
     {

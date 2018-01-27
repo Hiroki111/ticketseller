@@ -4,13 +4,10 @@ namespace Tests\Unit\Billing;
 
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentFailedException;
-//use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
 
 class FakePaymentGatewayTest extends TestCase
 {
-
-    //use DatabaseMigrations;
 
     /** @test */
     public function charges_with_a_valid_payment_token_are_successful()
@@ -34,4 +31,20 @@ class FakePaymentGatewayTest extends TestCase
         $this->fail();
     }
 
+    /** @test */
+    public function running_a_hook_before_the_first_charge()
+    {
+        $paymentGateway   = new FakePaymentGateway;
+        $timesCallbackRan = 0;
+
+        $paymentGateway->beforeFirstCharge(function ($paymentGateway) use (&$timesCallbackRan) {
+            $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+            $timesCallbackRan++;
+            $this->assertEquals(2500, $paymentGateway->totalCharges());
+        });
+
+        $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
+        $this->assertEquals(1, $timesCallbackRan);
+        $this->assertEquals(5000, $paymentGateway->totalCharges());
+    }
 }

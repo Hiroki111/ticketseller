@@ -2,7 +2,6 @@
 
 namespace Tests;
 
-use App\Concert;
 use App\Ticket;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Tests\TestCase;
@@ -25,14 +24,11 @@ class TicketTest extends TestCase
     /** @test */
     public function a_ticket_can_be_released()
     {
-        $concert = factory(Concert::class)->create();
-        $concert->addTickets(1);
-        $order  = $concert->orderTickets('blah@gmail.com', 1);
-        $ticket = $order->tickets()->first();
-        $this->assertEquals($order->id, $ticket->order_id);
+        $ticket = factory(Ticket::class)->states('reserved')->create();
+        $this->assertNotNull($ticket->reserved_at);
 
         $ticket->release();
 
-        $this->assertNull($ticket->fresh()->order_id);
+        $this->assertNull($ticket->fresh()->reserved_at);
     }
 }

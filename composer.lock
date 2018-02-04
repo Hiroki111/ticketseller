@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "cedda3144e4c577a7b81b411de4e33c5",
+    "content-hash": "e9b60557e3aaca77ae22e6576ea3cbaf",
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -913,6 +913,49 @@
             "time": "2017-12-26T14:43:21+00:00"
         },
         {
+            "name": "nothingworks/blade-svg",
+            "version": "v0.1.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/adamwathan/blade-svg.git",
+                "reference": "3ec8f970a4145350bd99cb021b1ea8a1833647ce"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/adamwathan/blade-svg/zipball/3ec8f970a4145350bd99cb021b1ea8a1833647ce",
+                "reference": "3ec8f970a4145350bd99cb021b1ea8a1833647ce",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/filesystem": "^5.3",
+                "illuminate/support": "^5.3"
+            },
+            "require-dev": {
+                "mockery/mockery": "^0.9.5",
+                "phpunit/phpunit": "^5.5"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "BladeSvg\\": "src/"
+                },
+                "files": [
+                    "src/helpers.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Wathan",
+                    "email": "adam.wathan@gmail.com"
+                }
+            ],
+            "time": "2017-04-29T15:27:41+00:00"
+        },
+        {
             "name": "paragonie/random_compat",
             "version": "v2.0.11",
             "source": {
@@ -1312,6 +1355,56 @@
                 "stripe"
             ],
             "time": "2018-01-17T20:53:33+00:00"
+        },
+        {
+            "name": "sun/icon-directive",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/IftekherSunny/IconDirective.git",
+                "reference": "58e63db1f3432a4f721e35162ed5b8ada77e5944"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/IftekherSunny/IconDirective/zipball/58e63db1f3432a4f721e35162ed5b8ada77e5944",
+                "reference": "58e63db1f3432a4f721e35162ed5b8ada77e5944",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6.4"
+            },
+            "require-dev": {
+                "phpspec/phpspec": "2.4.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Sun\\IconDirective\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Iftekher Sunny",
+                    "email": "iftekhersunny@hotmail.com",
+                    "homepage": "http://iftekhersunny.com"
+                }
+            ],
+            "description": "The icon directive provides @icon directive to use fontawesome icon in the blade template",
+            "keywords": [
+                "FontAwesome",
+                "directive",
+                "fontawesome directive",
+                "fontawesome icon directive",
+                "icon",
+                "icon directive",
+                "laravel",
+                "sun"
+            ],
+            "time": "2016-09-01T15:49:56+00:00"
         },
         {
             "name": "swiftmailer/swiftmailer",
@@ -2278,6 +2371,54 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "zondicons/blade-bridge",
+            "version": "v0.1.5",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/dukestreetstudio/zondicons-blade-bridge.git",
+                "reference": "2569ef01c1324301e07de1d02bba44e902edc473"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/dukestreetstudio/zondicons-blade-bridge/zipball/2569ef01c1324301e07de1d02bba44e902edc473",
+                "reference": "2569ef01c1324301e07de1d02bba44e902edc473",
+                "shasum": ""
+            },
+            "require": {
+                "nothingworks/blade-svg": "^0.1.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Zondicons\\ZondiconsServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Zondicons\\": "src/"
+                },
+                "files": []
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Adam Wathan",
+                    "email": "adam.wathan@gmail.com"
+                },
+                {
+                    "name": "Steve Schoger",
+                    "email": "sm.schoger@gmail.com"
+                }
+            ],
+            "description": "Easily integrate the Zondicons icon set into your Laravel applications.",
+            "time": "2017-12-06T20:31:56+00:00"
         }
     ],
     "packages-dev": [

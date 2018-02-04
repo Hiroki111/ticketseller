@@ -8,20 +8,27 @@ use Tests\TestCase;
 
 class FakePaymentGatewayTest extends TestCase
 {
+    protected function getPaymentGateway()
+    {
+        return new FakePaymentGateway;
+    }
 
     /** @test */
     public function charges_with_a_valid_payment_token_are_successful()
     {
-        $paymentGateway = new FakePaymentGateway;
+        $paymentGateway = $this->getPaymentGateway();
         $paymentGateway->charge(2500, $paymentGateway->getValidTestToken());
-        $this->assertEquals(2500, $paymentGateway->totalCharges());
+        //$this->assertEquals(2500, $paymentGateway->totalCharges());
+
+        $this->assertCount(1, $this->newCharges());
+        $this->assertEquals(2500, $this->lastCharge()->amount);
     }
 
     /** @test */
     public function charges_with_an_invalid_payment_token_fail()
     {
         try {
-            $paymentGateway = new FakePaymentGateway;
+            $paymentGateway = $this->getPaymentGateway();
             $paymentGateway->charge(2500, 'invalid-payment-token');
         } catch (PaymentFailedException $e) {
             $this->assertEquals(true, true);

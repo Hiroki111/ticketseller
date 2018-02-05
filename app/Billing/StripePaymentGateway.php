@@ -2,7 +2,7 @@
 
 namespace App\Billing;
 
-//use App\Billing\PaymentFailedException;
+use App\Billing\PaymentFailedException;
 use Stripe\Charge;
 
 class StripePaymentGateway implements PaymentGateway
@@ -23,8 +23,7 @@ class StripePaymentGateway implements PaymentGateway
                 "source"   => $token,
             ], ['api_key' => $this->apiKey]);
         } catch (\Stripe\Error\InvalidRequest $e) {
-            //throw new PaymentFailedException;
-            return false;
+            throw new PaymentFailedException;
         }
     }
 
@@ -58,9 +57,7 @@ class StripePaymentGateway implements PaymentGateway
     public function newChargesSince($charge = null)
     {
         $newCharges = \Stripe\Charge::all(
-            [
-                'ending_before' => $charge ? $charge->id : null,
-            ],
+            ['ending_before' => $charge ? $charge->id : null],
             ['api_key' => $this->apiKey]
         )['data'];
 

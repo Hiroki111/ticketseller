@@ -32,6 +32,13 @@ $factory->state(App\Concert::class, 'unpublished', function ($faker) {
     ];
 });
 
+$factory->define(App\Order::class, function (Faker $faker) {
+    return [
+        'amount' => 5250,
+        'email'  => 'blah@gmail.com',
+    ];
+});
+
 $factory->define(App\Ticket::class, function (Faker $faker) {
     return [
         'concert_id' => function () {

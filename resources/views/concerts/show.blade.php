@@ -48,8 +48,8 @@
                                 </div>
                                 <div class="media-body p-xs-l-2">
                                     <h3 class="text-base wt-medium text-dark">{{ $concert->venue }}</h3>
-                                    {{ $concert->venue_address }}<br>
-                                    {{ $concert->city }}, {{ $concert->state }} {{ $concert->zip }}
+                                    {{ $concert->address }}<br>
+                                    {{ $concert->suburb }}, {{ $concert->state }} {{ $concert->zip }}
                                 </div>
                             </div>
                         </div>

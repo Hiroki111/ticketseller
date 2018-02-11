@@ -9,7 +9,7 @@ $factory->define(App\Concert::class, function (Faker $faker) {
     return [
         'title'                  => 'Example band',
         'subtitle'               => 'with Example Openers',
-        'date'                   => Carbon::parse('+2 weeks'),
+        'date'                   => Carbon::parse('December 13, 2016 8:00pm'),
         'ticket_price'           => 2000,
         'venue'                  => 'Example Hall',
         'address'                => '8 Example St',

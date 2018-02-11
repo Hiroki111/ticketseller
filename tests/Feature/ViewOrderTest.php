@@ -15,7 +15,7 @@ class ViewOrderTest extends TestCase
     /** @test */
     public function user_can_view_their_order_confirmation()
     {
-        $concert = factory(Concert::class)->create();
+        $concert = factory(Concert::class)->states('published')->create();
         $order   = factory(Order::class)->create([
             'confirmation_number' => 'ORDERCONFIRMATION1234',
             'card_last_four'      => '1881',
@@ -44,5 +44,16 @@ class ViewOrderTest extends TestCase
         $response->assertSee('**** **** **** 1881');
         $response->assertSee('TICKETCODE123');
         $response->assertSee('TICKETCODE456');
+
+        $response->assertSee('Example band');
+        $response->assertSee('with Example Openers');
+        $response->assertSee('Example Hall');
+        $response->assertSee('8 Example St');
+        $response->assertSee('Example Plains');
+        $response->assertSee('EG');
+        $response->assertSee('4000');
+        $response->assertSee('blah@gmail.com');
+
+        $response->assertSee('2016-12-13 20:00');
     }
 }

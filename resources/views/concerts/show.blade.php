@@ -17,7 +17,7 @@
                                     @icon('calendar')
                                 </div>
                                 <div class="media-body p-xs-l-2">
-                                    <span class="wt-medium">{{ $concert->formatted_date }}</span>
+                                    <span class="wt-medium">{{ $ticket->concert->formatted_date }}</span>
                                 </div>
                             </div>
                         </div>

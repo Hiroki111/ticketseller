@@ -13,8 +13,8 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         //$this->call(ConcertTableSeeder::class);
-        //$this->call(OrderTableSeeder::class);
-        //$this->call(TicketTableSeeder::class);
+        $this->call(OrderTableSeeder::class);
+        $this->call(TicketTableSeeder::class);
 
         factory(App\Concert::class)->states('published')->create([
             'title'                  => 'Example band',

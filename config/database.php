@@ -33,13 +33,19 @@ return [
 
     'connections' => [
 
-        'sqlite' => [
+        'sqlite'      => [
+            'driver'   => 'sqlite',
+            'database' => env('DB_DATABASE', database_path('database.sqlite')),
+            'prefix'   => '',
+        ],
+
+        'sqlite_dusk' => [
             'driver'   => 'sqlite',
             'database' => database_path('dusk.sqlite'),
             'prefix'   => '',
         ],
 
-        'mysql'  => [
+        'mysql'       => [
             'driver'      => 'mysql',
             'host'        => env('DB_HOST', '127.0.0.1'),
             'port'        => env('DB_PORT', '3306'),
@@ -54,7 +60,7 @@ return [
             'engine'      => null,
         ],
 
-        'pgsql'  => [
+        'pgsql'       => [
             'driver'   => 'pgsql',
             'host'     => env('DB_HOST', '127.0.0.1'),
             'port'     => env('DB_PORT', '5432'),
@@ -67,7 +73,7 @@ return [
             'sslmode'  => 'prefer',
         ],
 
-        'sqlsrv' => [
+        'sqlsrv'      => [
             'driver'   => 'sqlsrv',
             'host'     => env('DB_HOST', 'localhost'),
             'port'     => env('DB_PORT', '1433'),

@@ -12,8 +12,9 @@ class OrderTableSeeder extends Seeder
     public function run()
     {
         DB::table('orders')->insert([
-            'amount' => 2000,
-            'email'  => "sample@gmail.com",
+            'amount'              => 2000,
+            'email'               => "sample@gmail.com",
+            'confirmation_number' => 'ORDERCONFIRMATION1234',
         ]);
     }
 }

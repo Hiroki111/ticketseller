@@ -13,7 +13,7 @@ return [
     |
      */
 
-    'name'            => env('APP_NAME', 'Laravel'),
+    'name'             => env('APP_NAME', 'Laravel'),
 
     /*
     |--------------------------------------------------------------------------
@@ -26,7 +26,7 @@ return [
     |
      */
 
-    'env'             => env('APP_ENV', 'production'),
+    'env'              => env('APP_ENV', 'production'),
 
     /*
     |--------------------------------------------------------------------------
@@ -39,7 +39,7 @@ return [
     |
      */
 
-    'debug'           => env('APP_DEBUG', false),
+    'debug'            => env('APP_DEBUG', false),
 
     /*
     |--------------------------------------------------------------------------
@@ -52,7 +52,7 @@ return [
     |
      */
 
-    'url'             => env('APP_URL', 'http://localhost'),
+    'url'              => env('APP_URL', 'http://localhost'),
 
     /*
     |--------------------------------------------------------------------------
@@ -65,7 +65,7 @@ return [
     |
      */
 
-    'timezone'        => 'UTC',
+    'timezone'         => 'UTC',
 
     /*
     |--------------------------------------------------------------------------
@@ -78,7 +78,7 @@ return [
     |
      */
 
-    'locale'          => 'en',
+    'locale'           => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -91,7 +91,7 @@ return [
     |
      */
 
-    'fallback_locale' => 'en',
+    'fallback_locale'  => 'en',
 
     /*
     |--------------------------------------------------------------------------
@@ -104,9 +104,9 @@ return [
     |
      */
 
-    'key'             => env('APP_KEY'),
+    'key'              => env('APP_KEY'),
 
-    'cipher'          => 'AES-256-CBC',
+    'cipher'           => 'AES-256-CBC',
 
     /*
     |--------------------------------------------------------------------------
@@ -121,9 +121,9 @@ return [
     |
      */
 
-    'log'             => env('APP_LOG', 'single'),
+    'log'              => env('APP_LOG', 'single'),
 
-    'log_level'       => env('APP_LOG_LEVEL', 'debug'),
+    'log_level'        => env('APP_LOG_LEVEL', 'debug'),
 
     /*
     |--------------------------------------------------------------------------
@@ -136,7 +136,7 @@ return [
     |
      */
 
-    'providers'       => [
+    'providers'        => [
 
         /*
          * Laravel Framework Service Providers...
@@ -191,7 +191,7 @@ return [
     |
      */
 
-    'aliases'         => [
+    'aliases'          => [
 
         'App'          => Illuminate\Support\Facades\App::class,
         'Artisan'      => Illuminate\Support\Facades\Artisan::class,
@@ -229,4 +229,5 @@ return [
 
     ],
 
+    'ticket_code_salt' => env('TICKET_CODE_SALT'),
 ];

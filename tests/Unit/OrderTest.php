@@ -7,6 +7,7 @@ use App\Order;
 use App\Ticket;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Mockery;
 use Tests\TestCase;
 
 class OrderTest extends TestCase
@@ -16,18 +17,26 @@ class OrderTest extends TestCase
     /** @test */
     public function creating_an_order_from_tickets_email_and_charge()
     {
-        $tickets = factory(Ticket::class, 3)->create();
-        $charge  = new Charge([
+        $charge = new Charge([
             'amount'         => 3600,
             'card_last_four' => '1234',
+        ]);
+
+        //Spies are a type of test doubles that keep track of the calls they received,
+        //and allow us to inspect these calls after the fact.
+        $tickets = collect([
+            Mockery::spy(Ticket::class),
+            Mockery::spy(Ticket::class),
+            Mockery::spy(Ticket::class),
         ]);
 
         $order = Order::forTickets($tickets, 'blah@gmail.com', $charge);
 
         $this->assertEquals('blah@gmail.com', $order->email);
-        $this->assertEquals(3, $order->ticketQuantity());
+        //$this->assertEquals(3, $order->ticketQuantity());
         $this->assertEquals(3600, $order->amount);
         $this->assertEquals('1234', $order->card_last_four);
+        $tickets->each->shouldHaveReceived('claimFor', [$order]);
     }
 
     /** @test */
@@ -64,15 +73,23 @@ class OrderTest extends TestCase
             'amount'              => 6000,
         ]);
 
-        $order->tickets()->saveMany(factory(Ticket::class)->times(5)->create());
+        $order->tickets()->saveMany([
+            factory(Ticket::class)->create(['code' => 'TICKETCODE1']),
+            factory(Ticket::class)->create(['code' => 'TICKETCODE2']),
+            factory(Ticket::class)->create(['code' => 'TICKETCODE3']),
+        ]);
 
         $result = $order->toArray();
 
         $this->assertEquals($order->toArray(), [
             'confirmation_number' => 'ORDERCONFIRMATION1234',
             'email'               => 'blah@gmail.com',
-            'ticket_quantity'     => 5,
             'amount'              => 6000,
+            'tickets'             => [
+                ['code' => 'TICKETCODE1'],
+                ['code' => 'TICKETCODE2'],
+                ['code' => 'TICKETCODE3'],
+            ],
         ]);
     }
 

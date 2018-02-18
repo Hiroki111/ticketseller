@@ -5,9 +5,9 @@ namespace Tests\Feature;
 use App\Billing\FakePaymentGateway;
 use App\Billing\PaymentGateway;
 use App\Concert;
-use App\OrderConfirmationNumberGenerator;
+use App\Facades\OrderConfirmationNumber;
+use App\Facades\TicketCode;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Mockery;
 use Tests\TestCase;
 
 class PurchaseTicketTest extends TestCase
@@ -42,10 +42,9 @@ class PurchaseTicketTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $orderConfirmationNumberGenerator = Mockery::mock(OrderConfirmationNumberGenerator::class, [
-            'generate' => 'ORDERCONFIRMATION1234',
-        ]);
-        $this->app->instance(OrderConfirmationNumberGenerator::class, $orderConfirmationNumberGenerator);
+        //https://laravel.com/docs/5.5/mocking#mocking-facades
+        OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
+        TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
 
         $concert = factory(Concert::class)->states('published')->create([
             'ticket_price' => 3250,
@@ -63,8 +62,12 @@ class PurchaseTicketTest extends TestCase
             ->assertJson([
                 'confirmation_number' => 'ORDERCONFIRMATION1234',
                 'email'               => 'john@example.com',
-                'ticket_quantity'     => 3,
                 'amount'              => 9750,
+                'tickets'             => [
+                    ['code' => 'TICKETCODE1'],
+                    ['code' => 'TICKETCODE2'],
+                    ['code' => 'TICKETCODE3'],
+                ],
             ]);
 
         $this->assertEquals(9750, $this->paymentGateway->totalCharges());

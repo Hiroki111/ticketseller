@@ -7,7 +7,9 @@ use App\Billing\PaymentGateway;
 use App\Concert;
 use App\Facades\OrderConfirmationNumber;
 use App\Facades\TicketCode;
+use App\Mail\OrderConfirmationEmail;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Support\Facades\Mail;
 use Tests\TestCase;
 
 class PurchaseTicketTest extends TestCase
@@ -41,6 +43,7 @@ class PurchaseTicketTest extends TestCase
     public function customer_can_purchase_tickets_to_a_pubished_concert()
     {
         $this->withoutExceptionHandling();
+        Mail::fake();
 
         //https://laravel.com/docs/5.5/mocking#mocking-facades
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
@@ -72,7 +75,13 @@ class PurchaseTicketTest extends TestCase
 
         $this->assertEquals(9750, $this->paymentGateway->totalCharges());
         $this->assertTrue($concert->hasOrderFor('john@example.com'));
-        $this->assertEquals(3, $concert->ordersFor('john@example.com')->first()->ticketQuantity());
+        $order = $concert->ordersFor('john@example.com')->first();
+        $this->assertEquals(3, $order->ticketQuantity());
+
+        Mail::assertSent(OrderConfirmationEmail::class, function ($mail) use ($order) {
+            return $mail->hasTo('john@example.com')
+            && $mail->order->id === $order->id;
+        });
     }
 
     /** @test */

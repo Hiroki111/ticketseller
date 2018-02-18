@@ -23,6 +23,8 @@ class PurchaseTicketTest extends TestCase
         //$this->app->instance is explanied in...
         //https://laravel.com/docs/5.5/container
         $this->app->instance(PaymentGateway::class, $this->paymentGateway);
+        Mail::fake();
+
     }
 
     private function orderTickets($concert, $params)
@@ -43,7 +45,6 @@ class PurchaseTicketTest extends TestCase
     public function customer_can_purchase_tickets_to_a_pubished_concert()
     {
         $this->withoutExceptionHandling();
-        Mail::fake();
 
         //https://laravel.com/docs/5.5/mocking#mocking-facades
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');

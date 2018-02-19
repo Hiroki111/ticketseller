@@ -22,6 +22,9 @@ Route::get('/orders/{confirmationNumber}', 'OrdersController@show');
 Route::get('/login', 'Auth\LoginController@showLoginForm');
 Route::post('/login', 'Auth\LoginController@login');
 
-Auth::routes();
+Route::get('/backstage/concerts', function () {
+    return "loggied in!";
+});
 
+Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');

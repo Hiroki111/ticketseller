@@ -12,14 +12,15 @@ $factory->define(App\Concert::class, function (Faker $faker) {
         },
         'title'                  => 'Example band',
         'subtitle'               => 'with Example Openers',
+        'additional_information' => 'Example additional info',
         'date'                   => Carbon::parse('December 13, 2016 8:00pm'),
-        'ticket_price'           => 2000,
         'venue'                  => 'Example Hall',
         'address'                => '8 Example St',
         'suburb'                 => 'Example Plains',
         'state'                  => 'EG',
         'zip'                    => '4000',
-        'additional_information' => 'Example additional info',
+        'ticket_price'           => 2000,
+        'ticket_quantity'        => 5,
     ];
 });
 

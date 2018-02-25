@@ -50,9 +50,14 @@ class PurchaseTicketTest extends TestCase
         OrderConfirmationNumber::shouldReceive('generate')->andReturn('ORDERCONFIRMATION1234');
         TicketCode::shouldReceive('generateFor')->andReturn('TICKETCODE1', 'TICKETCODE2', 'TICKETCODE3');
 
-        $concert = factory(Concert::class)->states('published')->create([
-            'ticket_price' => 3250,
-        ])->addTickets(3);
+        // $concert = factory(Concert::class)->states('published')->create([
+        //     'ticket_price' => 3250,
+        // ])->addTickets(3);
+
+        $concert = \ConcertFactory::createPublished([
+            'ticket_price'    => 3250,
+            'ticket_quantity' => 3,
+        ]);
 
         //$this->json is Laravel's helper for testing API
         //https://laravel.com/docs/5.5/http-tests#testing-json-apis

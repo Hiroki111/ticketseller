@@ -7,6 +7,9 @@ use Faker\Generator as Faker;
 //In this case, for example, 'published_at' is omitted, since it's nullable
 $factory->define(App\Concert::class, function (Faker $faker) {
     return [
+        'user_id'                => function () {
+            return factory(App\User::class)->create()->id;
+        },
         'title'                  => 'Example band',
         'subtitle'               => 'with Example Openers',
         'date'                   => Carbon::parse('December 13, 2016 8:00pm'),

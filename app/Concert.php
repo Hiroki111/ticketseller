@@ -5,12 +5,18 @@ namespace App;
 use App\Exceptions\NotEnoughTicketsException;
 use App\Order;
 use App\Reservation;
+use App\User;
 use Illuminate\Database\Eloquent\Model;
 
 class Concert extends Model
 {
     protected $guarded = [];
     protected $dates   = ['date'];
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
 
     public function getFormattedDateAttribute()
     {
@@ -30,6 +36,16 @@ class Concert extends Model
     public function scopePublished($query)
     {
         return $query->whereNotNull('published_at');
+    }
+
+    public function isPublished()
+    {
+        return $this->published_at !== null;
+    }
+
+    public function publish()
+    {
+        $this->update(['published_at' => $this->freshTimestamp()]);
     }
 
     public function orders()

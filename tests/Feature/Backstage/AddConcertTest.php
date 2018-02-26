@@ -72,8 +72,7 @@ class AddConcertTest extends TestCase
         ]);
 
         tap(Concert::first(), function ($concert) use ($response, $user) {
-            $response->assertStatus(302);
-            $response->assertRedirect("/concerts/{$concert->id}");
+            $response->assertRedirect('/backstage/concerts');
 
             $this->assertTrue($concert->user->is($user));
 
@@ -129,8 +128,7 @@ class AddConcertTest extends TestCase
 
         tap(Concert::first(), function ($concert) use ($response, $user) {
             $this->assertTrue($concert->user->is($user));
-            $response->assertStatus(302);
-            $response->assertRedirect("/concerts/{$concert->id}");
+            $response->assertRedirect('/backstage/concerts');
             $this->assertNull($concert->subtitle);
         });
     }
@@ -140,40 +138,14 @@ class AddConcertTest extends TestCase
     {
         $this->withoutExceptionHandling();
 
-        $user = factory(User::class)->create();
-
-        $response = $this->actingAs($user)->post('/backstage/concerts', [
-            'title'                  => 'No Warning',
-            'subtitle'               => 'Blah',
+        $user     = factory(User::class)->create();
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
             'additional_information' => "",
-            'date'                   => '2017-11-18',
-            'time'                   => '8:00pm',
-            'venue'                  => 'The Mosh Pit',
-            'address'                => '123 Fake St.',
-            'suburb'                 => 'Laraville',
-            'state'                  => 'ON',
-            'zip'                    => '12345',
-            'ticket_price'           => '32.50',
-            'ticket_quantity'        => '75',
-        ]);
-
+        ]));
         tap(Concert::first(), function ($concert) use ($response, $user) {
-            $response->assertStatus(302);
-            $response->assertRedirect("/concerts/{$concert->id}");
-
+            $response->assertRedirect('/backstage/concerts');
             $this->assertTrue($concert->user->is($user));
-
-            $this->assertEquals('No Warning', $concert->title);
-            $this->assertEquals('Blah', $concert->subtitle);
             $this->assertNull($concert->additional_information);
-            $this->assertEquals(Carbon::parse('2017-11-18 8:00pm'), $concert->date);
-            $this->assertEquals('The Mosh Pit', $concert->venue);
-            $this->assertEquals('123 Fake St.', $concert->address);
-            $this->assertEquals('Laraville', $concert->suburb);
-            $this->assertEquals('ON', $concert->state);
-            $this->assertEquals('12345', $concert->zip);
-            $this->assertEquals(3250, $concert->ticket_price);
-            $this->assertEquals(75, $concert->ticketsRemaining());
         });
     }
 

@@ -7,6 +7,8 @@ use App\User;
 use Carbon\Carbon;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Http\Testing\File;
+use Illuminate\Support\Facades\Storage;
 use Tests\TestCase;
 
 class AddConcertTest extends TestCase
@@ -228,6 +230,21 @@ class AddConcertTest extends TestCase
     }
 
     /** @test */
+    public function ticket_quantity_must_be_at_least_1()
+    {
+        $user = factory(User::class)->create();
+
+        session()->setPreviousUrl(url('/backstage/concerts/new'));
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'ticket_quantity' => '0',
+        ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('ticket_quantity');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
     public function ticket_price_must_be_at_least_5()
     {
 
@@ -251,5 +268,94 @@ class AddConcertTest extends TestCase
         $response->assertRedirect('/backstage/concerts/new');
         $response->assertSessionHasErrors('ticket_price');
         $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    public function poster_image_is_uploaded_if_included()
+    {
+        Storage::fake('s3');
+        $user     = factory(User::class)->create();
+        $file     = File::image('concert-poster.png', 850, 1100);
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+        tap(Concert::first(), function ($concert) use ($file) {
+            $this->assertNotNull($concert->poster_image_path);
+            Storage::disk('s3')->assertExists($concert->poster_image_path);
+            $this->assertFileEquals(
+                $file->getPathname(),
+                Storage::disk('s3')->path($concert->poster_image_path)
+            );
+        });
+    }
+
+    /** @test */
+    public function poster_image_must_be_an_image()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::create('not-a-poster.pdf');
+
+        session()->setPreviousUrl(url('/backstage/concerts/new'));
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'ticket_quantity' => '0',
+        ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('ticket_quantity');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    public function poster_image_must_be_at_least_400px_wide()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::image('poster.png', 399, 516);
+
+        session()->setPreviousUrl(url('/backstage/concerts/new'));
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    public function poster_image_must_have_letter_aspect_ratio()
+    {
+        Storage::fake('s3');
+        $user = factory(User::class)->create();
+        $file = File::image('poster.png', 851, 1100);
+
+        session()->setPreviousUrl(url('/backstage/concerts/new'));
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'poster_image' => $file,
+        ]));
+
+        $response->assertRedirect('/backstage/concerts/new');
+        $response->assertSessionHasErrors('poster_image');
+        $this->assertEquals(0, Concert::count());
+    }
+
+    /** @test */
+    public function poster_image_is_optional()
+    {
+        $user = factory(User::class)->create();
+
+        session()->setPreviousUrl(url('/backstage/concerts/new'));
+        $response = $this->actingAs($user)->post('/backstage/concerts', $this->validParams([
+            'poster_image' => null,
+        ]));
+
+        tap(Concert::first(), function ($concert) use ($response, $user) {
+            $response->assertRedirect('/backstage/concerts');
+
+            $this->assertTrue($concert->user->is($user));
+
+            $this->assertNull($concert->poster_image_path);
+        });
     }
 }
